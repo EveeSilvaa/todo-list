@@ -1,0 +1,9 @@
+.main {
+    min-height: 60vh; /*altura minima*/
+    text-align: center;
+    padding: 2em; /*espaçamento interno */
+}
+
+.main h2 {
+    margin-bottom: 0.8em; /*afasta os elementos que estao a baixo  e não deixa grudado no titulo*/
+}
