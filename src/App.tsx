@@ -1,69 +1,48 @@
-import React, { useState } from 'react';
-import Header from './component/Header';
-import TaskList from './component/TaskList';
-import TaskForm from "./component/TaskForm";
-import Footer from './component/Footer';
-import Modal from './component/Modal';
-import { ITask } from "./intefaces/Task";
-import styles from './App.module.css';
+
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import Index from "./pages/Index";
+import NotFound from "./pages/NotFound";
+
+const queryClient = new QueryClient();
 
 const App = () => {
-  const [taskList, setTaskList] = useState<ITask[]>([]);
-  const [taskToUpdate, setTaskToUpdate] = useState<ITask | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleDelete = (id: number) => {
-    setTaskList(taskList.filter(task => task.id !== id));
-  };
-
-  const handleEdit = (task: ITask) => {
-    setTaskToUpdate(task);
-    setIsModalOpen(true);
-  };
-
-  const handleUpdate = (id: number, title: string, difficulty: number) => {
-    const updatedTaskList = taskList.map(task => {
-      if (task.id === id) {
-        return { ...task, title, difficulty };
-      }
-      return task;
-    });
-    setTaskList(updatedTaskList);
-    setIsModalOpen(false);
-  };
-
+  // Check for system dark mode preference on mount
+  useEffect(() => {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const storedTheme = localStorage.getItem("theme");
+    
+    if (!storedTheme) {
+      document.documentElement.classList.toggle("dark", prefersDark);
+      localStorage.setItem("theme", prefersDark ? "dark" : "light");
+    } else {
+      document.documentElement.classList.toggle("dark", storedTheme === "dark");
+    }
+  }, []);
+  
   return (
-    <div className={styles.app}>
-      <Header />
-      <main className={styles.main}>
-        <div>
-          <h2>O que você vai fazer?</h2>
-          <TaskForm
-            btnText="Criar Tarefa"
-            taskList={taskList}
-            setTaskList={setTaskList}
-          />
-        </div>
-        <div>
-          <h2>Suas tarefas:</h2>
-          <TaskList
-            taskList={taskList}
-            handleDelete={handleDelete}
-            handleEdit={handleEdit}
-          />
-        </div>
-      </main>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <TaskForm
-          btnText="Atualizar Tarefa"
-          taskList={taskList}
-          setTaskList={setTaskList}
-          task={taskToUpdate}
-          handleUpdate={handleUpdate}
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner 
+          position="top-right"
+          toastOptions={{
+            duration: 3000,
+            className: "!bg-background !text-foreground !border-border !shadow-md"
+          }}
         />
-      </Modal>
-    <Footer />
-    </div>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
   );
 };
 
