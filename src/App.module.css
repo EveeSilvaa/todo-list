@@ -1,9 +1,18 @@
-.main {
-    min-height: 60vh; /*altura minima*/
-    text-align: center;
-    padding: 2em; /*espaçamento interno */
+.app {
+  font-family: Arial, sans-serif;
+  background-color: #F5F5F5;
+  min-height: 100vh;
+  padding: 20px;
+  padding-bottom: 60px; /* Espaçamento para o footer fixo */
 }
 
-.main h2 {
-    margin-bottom: 0.8em; /*afasta os elementos que estao a baixo  e não deixa grudado no titulo*/
+.main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding-top: 80px; /* Espaçamento para o header fixo */
+}
+
+h2 {
+  color: #333333;
+  margin-bottom: 20px; /* Espaçamento abaixo dos títulos */
 }

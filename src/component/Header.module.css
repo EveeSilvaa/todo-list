@@ -1,6 +1,12 @@
 .header {
-    background-color: #282c34;
-    color: #61dafb;
-    text-align: center;
-    padding: 1em;
+  background-color: #153f61;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed; /* Fixando o header no topo */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Garantindo que o header fique acima de outros elementos */
 }
