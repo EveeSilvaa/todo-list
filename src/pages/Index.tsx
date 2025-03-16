@@ -122,7 +122,7 @@ const Index = () => {
     });
   };
 
-  const handleDragEnd = (result: DropResult) => {
+  const handleDragEnd = (result: any) => {
     if (!result.destination) return;
     
     if (result.destination.index === result.source.index) return;
