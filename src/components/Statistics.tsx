@@ -21,6 +21,7 @@ import {
   Legend 
 } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface StatisticsProps {
   statistics: TaskStatistics;
@@ -41,6 +42,8 @@ const COLORS = {
 };
 
 const Statistics: React.FC<StatisticsProps> = ({ statistics }) => {
+  const isMobile = useIsMobile();
+  
   // Prepare data for category chart
   const categoryData = Object.entries(statistics.tasksByCategory).map(([category, count]) => ({
     name: category.charAt(0).toUpperCase() + category.slice(1),
@@ -66,7 +69,7 @@ const Statistics: React.FC<StatisticsProps> = ({ statistics }) => {
   const completionByDayData = Object.entries(statistics.tasksCompletedByDay)
     .sort(([dayA], [dayB]) => new Date(dayA).getTime() - new Date(dayB).getTime())
     .map(([day, count]) => ({
-      name: new Date(day).toLocaleDateString(undefined, { weekday: 'short' }),
+      name: new Date(day).toLocaleDateString(undefined, { weekday: isMobile ? 'narrow' : 'short' }),
       value: count,
     })).slice(-7); // Last 7 days
 
@@ -84,8 +87,12 @@ const Statistics: React.FC<StatisticsProps> = ({ statistics }) => {
     low: { color: COLORS.low, label: "Low" },
   };
 
+  // Define pie chart sizes based on screen size
+  const pieOuterRadius = isMobile ? 60 : 80;
+  const barChartHeight = isMobile ? 200 : 250;
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
       {/* Summary Cards */}
       <div className="grid grid-cols-2 gap-4 md:col-span-2">
         <Card>
@@ -129,9 +136,9 @@ const Statistics: React.FC<StatisticsProps> = ({ statistics }) => {
                   nameKey="name"
                   cx="50%"
                   cy="50%"
-                  outerRadius={80}
+                  outerRadius={pieOuterRadius}
                   label={({ name, percent }) => 
-                    `${name}: ${Math.round(percent * 100)}%`
+                    isMobile ? `${Math.round(percent * 100)}%` : `${name}: ${Math.round(percent * 100)}%`
                   }
                 >
                   {completionData.map((entry, index) => (
@@ -166,9 +173,9 @@ const Statistics: React.FC<StatisticsProps> = ({ statistics }) => {
                   nameKey="name"
                   cx="50%"
                   cy="50%"
-                  outerRadius={80}
+                  outerRadius={pieOuterRadius}
                   label={({ name, percent }) => 
-                    `${name}: ${Math.round(percent * 100)}%`
+                    isMobile ? `${Math.round(percent * 100)}%` : `${name}: ${Math.round(percent * 100)}%`
                   }
                 >
                   {categoryData.map((entry, index) => (
@@ -190,12 +197,12 @@ const Statistics: React.FC<StatisticsProps> = ({ statistics }) => {
           <CardDescription>Tasks completed in the last 7 days</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="h-80">
+          <div className={`h-${barChartHeight}`}>
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={completionByDayData}>
+              <BarChart data={completionByDayData} margin={{ top: 10, right: 10, left: 0, bottom: 20 }}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
-                <YAxis allowDecimals={false} />
+                <YAxis allowDecimals={false} width={isMobile ? 30 : 40} />
                 <Tooltip />
                 <Legend />
                 <Bar dataKey="value" name="Tasks Completed" fill={COLORS.completed} />
