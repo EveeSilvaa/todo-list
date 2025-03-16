@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import AppHeader from "@/components/AppHeader";
@@ -22,6 +21,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { PlusCircle, BarChart3, ListTodo, Clock } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Index = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -34,12 +34,11 @@ const Index = () => {
   const [activeTab, setActiveTab] = useState<string>("tasks");
   const [statistics, setStatistics] = useState<TaskStatistics | null>(null);
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
-  // Load tasks from localStorage on component mount
   useEffect(() => {
     const savedTasks = loadTasks();
     
-    // If no saved tasks, generate sample tasks for demo purposes
     if (savedTasks.length === 0) {
       const sampleTasks = generateSampleTasks();
       setTasks(sampleTasks);
@@ -49,7 +48,6 @@ const Index = () => {
     }
   }, []);
 
-  // Calculate statistics whenever tasks change
   useEffect(() => {
     if (tasks.length > 0) {
       const stats = calculateTaskStatistics(tasks);
@@ -57,7 +55,6 @@ const Index = () => {
     }
   }, [tasks]);
 
-  // Save tasks to localStorage whenever tasks change
   useEffect(() => {
     if (tasks.length > 0) {
       saveTasks(tasks);
@@ -78,9 +75,7 @@ const Index = () => {
   };
 
   const handleTaskSubmit = (task: Task) => {
-    // Check if we're editing an existing task or creating a new one
     if (editingTask) {
-      // Update existing task
       setTasks((prevTasks) =>
         prevTasks.map((t) => (t.id === task.id ? task : t))
       );
@@ -89,7 +84,6 @@ const Index = () => {
         description: "Your task has been updated successfully.",
       });
     } else {
-      // Add new task
       setTasks((prevTasks) => [task, ...prevTasks]);
       toast({
         title: "Task created",
@@ -106,7 +100,6 @@ const Index = () => {
         if (task.id === taskId) {
           const updatedTask = toggleTaskStatus(task);
           
-          // Show toast notification
           toast({
             title: updatedTask.status === "completed" ? "Task completed" : "Task reopened",
             description: updatedTask.status === "completed"
@@ -141,7 +134,6 @@ const Index = () => {
         result.destination.index
       );
       
-      // Save the reordered tasks
       saveTasks(reordered);
       return reordered;
     });
@@ -153,16 +145,13 @@ const Index = () => {
   };
 
   const handleImportTasks = (importedTasks: Task[]) => {
-    // Merge imported tasks with existing tasks
     setTasks(prevTasks => [...prevTasks, ...importedTasks]);
   };
 
   const handlePomodoroComplete = () => {
     console.log("Pomodoro completed!");
-    // You could do something when a pomodoro is completed, like log productivity
   };
 
-  // Calculate completed tasks stats
   const tasksCount = {
     total: tasks.length,
     completed: tasks.filter((task) => task.status === "completed").length,
@@ -172,26 +161,26 @@ const Index = () => {
     <div className="min-h-screen flex flex-col bg-background">
       <AppHeader onAddTask={handleAddTask} tasksCount={tasksCount} />
       
-      <main className="flex-1 container max-w-4xl mx-auto px-4 py-6">
-        <div className="flex justify-between items-center mb-6">
+      <main className="flex-1 container mx-auto px-3 py-4 sm:px-4 sm:py-6 md:max-w-4xl">
+        <div className="flex flex-col space-y-4">
           <Tabs 
             value={activeTab} 
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <div className="flex justify-between items-center mb-4">
-              <TabsList>
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4">
+              <TabsList className="w-full sm:w-auto">
                 <TabsTrigger value="tasks" className="flex items-center gap-1">
                   <ListTodo className="h-4 w-4" />
-                  Tasks
+                  <span className={isMobile ? "sr-only" : ""}>Tasks</span>
                 </TabsTrigger>
                 <TabsTrigger value="statistics" className="flex items-center gap-1">
                   <BarChart3 className="h-4 w-4" />
-                  Statistics
+                  <span className={isMobile ? "sr-only" : ""}>Statistics</span>
                 </TabsTrigger>
                 <TabsTrigger value="pomodoro" className="flex items-center gap-1">
                   <Clock className="h-4 w-4" />
-                  Pomodoro
+                  <span className={isMobile ? "sr-only" : ""}>Pomodoro</span>
                 </TabsTrigger>
               </TabsList>
               
@@ -199,10 +188,12 @@ const Index = () => {
                 {activeTab === "tasks" && (
                   <>
                     <ImportExport tasks={tasks} onImport={handleImportTasks} />
-                    <Button onClick={handleAddTask} className="gap-1">
-                      <PlusCircle className="h-4 w-4" />
-                      Add Task
-                    </Button>
+                    {!isMobile && (
+                      <Button onClick={handleAddTask} className="gap-1">
+                        <PlusCircle className="h-4 w-4" />
+                        Add Task
+                      </Button>
+                    )}
                   </>
                 )}
               </div>
