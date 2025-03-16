@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 import AppHeader from "@/components/AppHeader";
 import TaskList from "@/components/TaskList";
 import TaskForm from "@/components/TaskForm";
@@ -122,7 +122,7 @@ const Index = () => {
     });
   };
 
-  const handleDragEnd = (result: any) => {
+  const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
     
     if (result.destination.index === result.source.index) return;
