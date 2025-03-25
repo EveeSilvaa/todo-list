@@ -1,46 +1,68 @@
-# Getting Started with Create React App
+# To-Do List  
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Welcome to the **To-Do List** project, a web application designed to help organize daily tasks efficiently. This project was created to improve front-end development skills using modern technologies and best coding practices.  
 
-## Available Scripts
+## Features  
 
-In the project directory, you can run:
+- **Add Tasks**: Allows users to add new tasks to the list.
+- **Mark as Completed**: Enables users to mark tasks as completed for better progress tracking.
+- **Remove Tasks**: Provides an option to delete tasks when they are no longer needed. 
+- **Responsive Design**: Ensures an optimal experience across different screen sizes, including mobile and desktop.  
 
-### `npm start`
+## Technologies Used  
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **React**: A JavaScript library for building user interfaces.
+- **Tailwind CSS**: A utility-first CSS framework for fast and consistent styling. 
+- **TypeScript**: A superset of JavaScript that adds static typing. 
+- **Vite**: A fast and efficient build tool for front-end projects. 
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Project Structure  
 
-### `npm test`
+- **src/**: Contains the application's source code. 
+  - **components/**: Reusable UI components. 
+  - **pages/**: Main application pages.
+  - **assets/**: Static resources like images and icons.
+- **public/**: Public files, including `index.html`. 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## How to Run the Project  
 
-### `npm run build`
+1. **Clone the repository**:  
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+   ```bash
+   git clone https://github.com/EveeSilvaa/todo-list.git
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. **Navigate to the project directory**:  
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+   ```bash
+   cd todo-list
+   ```
 
-### `npm run eject`
+3. **Install dependencies**:  
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+   ```bash
+   npm install
+   ```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+4. **Start the development server**:  
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+   ```bash
+   npm start
+   ```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+   The application will be available at `http://localhost:3000`.  
 
-## Learn More
+## Deployment  
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The application is available online through Vercel. You can access it at:  
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+[https://todo-list-r7xi-eveesilvaas-projects.vercel.app/](https://todo-list-r7xi-eveesilvaas-projects.vercel.app/)  
+
+## Contributions  
+
+Contributions are welcome! If you have suggestions or improvements, feel free to open an issue or submit a pull request.  
+
+## License  
+
+This project is licensed under the MIT License. For more details, check the `LICENSE` file in the repository.  
+
